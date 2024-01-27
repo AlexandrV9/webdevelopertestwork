@@ -1,8 +1,6 @@
 import { WSServer } from "./WSServer";
 import { WSClient } from "./WSClient";
 
-// const server = new WSServer();
-
 export class WSConnector {
   client: WSClient | undefined;
   server: WSServer | undefined;
@@ -13,9 +11,6 @@ export class WSConnector {
   }
 
   connect() {
-    // if (!this.server?.isStart) {
-      // this.server?.start();
-    // }
     this.server?.start();
     this.client?.connect();
   }

@@ -7,12 +7,14 @@ import { Input } from "shared/ui/Input/ui/Input";
 import { Button, ButtonTheme } from "shared/ui/Button/ui/Button";
 import { formatAmount } from "shared/lib/common/formatAmount";
 import { WSContext } from "app/providers/WSProvider/config/WSContext";
+import { CurrencyPair } from "shared/models/CurrencyPair";
+import { OrderSide } from "shared/types/Enums";
 
 interface TickerProps {
   className?: string;
 }
 
-const currencyPairs = [
+const currencyPairs: CurrencyPair[] = [
   { id: 1, name: "CNH / RUB" },
   { id: 2, name: "EUR / RUB" },
   { id: 3, name: "EUR / USD" },
@@ -40,13 +42,19 @@ export const Ticker: FC<TickerProps> = memo((props) => {
   }, []);
 
   const handleClickBtnBuy = useCallback(() => {
-    placeOrder?.(selectCurrencyPair, "Buy", amount, buyPrice);
+    placeOrder?.(selectCurrencyPair, OrderSide.BUY, amount, buyPrice);
+  }, [amount, placeOrder, selectCurrencyPair]);
+
+  const handleClickBtnSell = useCallback(() => {
+    placeOrder?.(selectCurrencyPair, OrderSide.SELL, amount, buyPrice);
   }, [amount, placeOrder, selectCurrencyPair]);
 
   return (
     <div className={classNames(cls.Ticker, {}, [className])}>
       <SelectList
+        // @ts-ignore
         value={selectCurrencyPair}
+        // @ts-ignore
         list={currencyPairs}
         onChange={setSelectCurrencyPair}
         className={cls.listCurrencyPair}
@@ -60,7 +68,11 @@ export const Ticker: FC<TickerProps> = memo((props) => {
       <div className={cls.infoBox}>
         <div className={cls.left}>
           <p>8.558</p>
-          <Button theme={ButtonTheme.RED} fullWidth>
+          <Button
+            theme={ButtonTheme.RED}
+            fullWidth
+            onClick={handleClickBtnSell}
+          >
             Sell / Short
           </Button>
         </div>

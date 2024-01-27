@@ -5,15 +5,19 @@ export enum ClientMessageType {
 }
 
 export enum ServerMessageType {
-    success = 1,
-    error,
-    executionReport,
-    marketDataUpdate,
+    placeOrder = 1,
 }
 
+// export enum ServerMessageType {
+//     success = 1,
+//     error,
+//     executionReport,
+//     marketDataUpdate,
+// }
+
 export enum OrderSide {
-    buy = 1,
-    sell,
+    BUY = 1,
+    SELL,
 }
 
 export enum OrderStatus {

@@ -1,4 +1,4 @@
-import { Rate } from "../types/Rate";
+import { Rate } from "shared/models/Rate";
 
 const rateItem: Rate = {
   id: 1,

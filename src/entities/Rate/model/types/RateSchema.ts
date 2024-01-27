@@ -1,4 +1,4 @@
-import { Rate } from "./Rate";
+import { Rate } from "shared/models/Rate";
 
 export interface RateSchema {
   isSuccess: boolean;

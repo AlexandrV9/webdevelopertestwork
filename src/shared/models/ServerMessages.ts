@@ -5,7 +5,9 @@ export interface ServerEnvelope extends Envelope {
   messageType: ServerMessage;
 }
 
-export interface ServerMessage extends Message {}
+export interface ServerMessage extends Message {
+  
+}
 
 export interface ErrorInfo extends ServerMessage {
   reason: string;

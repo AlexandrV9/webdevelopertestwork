@@ -1,5 +1,6 @@
 import { Client, Server } from "mock-socket";
 import { ServerEnvelope } from "shared/models/ServerMessages";
+import { ServerMessageType } from "shared/types/Enums";
 
 export class WSServer {
   server: undefined | Server;
@@ -34,11 +35,19 @@ export class WSServer {
 const handleOnMessage =
   (socket: Client) =>
   (event: string | Blob | ArrayBuffer | ArrayBufferView) => {
-    if (typeof event === "string") {
+    if(typeof event !== "string") {
+      socket.send("Сервер принимает только данные в формате string")
+    } else {
       const data = JSON.parse(event) as ServerEnvelope;
       console.log(data.messageType);
       console.log(data.message);
+      
+      switch(data.messageType) {
+        default:
+          break;
+      }
     }
+
     console.log("Сервер принимает данные");
     console.log(event);
     socket.send(JSON.stringify("Ответ сервера"));
