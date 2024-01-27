@@ -1,0 +1,28 @@
+.InputWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
+.placeholder {
+  margin-bottom: 5px;
+  color: rgb(170 175 181);
+}
+
+.input {
+  background: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+  color: rgb(254 254 254);
+  padding: 10px;
+  background-color: rgb(32 33 36);
+  border-radius: 8px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.readonly {
+  opacity: 0.7;
+}

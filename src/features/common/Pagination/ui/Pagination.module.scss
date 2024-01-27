@@ -1,0 +1,95 @@
+.Pagination {
+  display: grid;
+  grid-template-columns: 1fr min-content;
+  grid-template-rows: 56px;
+  column-gap: 24px;
+  margin-top: 24px;
+}
+
+.switchButtonsOne {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .btnPrev,
+  .btnNext {
+    border-radius: 8px;
+    padding: 14px 32px;
+    display: grid;
+    align-items: center;
+    column-gap: 8px;
+    font: var(--font-m);
+    font-weight: 500;
+  }
+
+  .btnPrev {
+    grid-template-columns: 19px 1fr;
+    color: var(--text-black, #07232d);
+    border: 2px solid var(--Light, #03bafc);
+    background: var(--Background, #f7f8f9);
+    margin-right: 16px;
+  }
+
+  .btnNext {
+    grid-template-columns: 1fr 19px;
+    color: var(--White, #fff);
+    background: var(--Light, #03bafc);
+
+    &.disabled {
+      background-color: #b6d0d9;
+    }
+  }
+}
+
+.switchButtonsTwo {
+  display: grid;
+  grid-template-columns: repeat(2, 32px);
+  grid-template-rows: 32px;
+  column-gap: 2px;
+
+  .btnPrev,
+  .btnNext {
+    border-radius: 4px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--Light, #03bafc);
+    background: var(--Background, #f7f8f9);
+
+    &:disabled {
+      opacity: 0.4;
+    }
+  }
+}
+
+.inpPage {
+  max-width: 52px;
+  border-radius: 4px;
+  border: 1px solid var(--Light, #03bafc);
+  background: var(--Background, #f7f8f9);
+
+  input {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 52px;
+    text-align: center;
+  }
+}
+
+.switcherPage {
+  display: grid;
+  grid-template-columns: repeat(3, min-content);
+  align-items: center;
+  column-gap: 12px;
+
+  .countPage {
+    font: var(--font-m);
+    font-weight: 500;
+    color: var(--text-black, #07232d);
+
+    span:nth-child(1) {
+      margin-right: 8px;
+    }
+  }
+}

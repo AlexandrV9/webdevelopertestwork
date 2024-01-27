@@ -1,0 +1,28 @@
+.Button {
+  padding: 10px;
+  border-radius: 12px;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 600;
+  color: white;
+  transition: all 0.1s;
+
+  &:hover {
+    cursor: pointer;
+    transform: scale(0.99);
+    opacity: 0.5;
+  }
+}
+
+.red {
+  background-color: rgb(239 70 75);
+}
+
+.green {
+  background-color: rgb(32 177 108);
+}
+
+.fullWidth {
+  width: 100%;
+}
+
