@@ -1,4 +1,6 @@
+import { Instrument } from "shared/types/Enums";
+
 export interface CurrencyPair {
   id: string | number;
-  name: string;
+  instrument: Instrument;
 }

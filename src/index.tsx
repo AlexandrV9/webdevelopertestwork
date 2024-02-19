@@ -11,10 +11,10 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <NotificationProvider>
-    <WSProvider>
-      <StoreProvider>
+    <StoreProvider>
+      <WSProvider>
         <App />
-      </StoreProvider>
-    </WSProvider>
+      </WSProvider>
+    </StoreProvider>
   </NotificationProvider>
 );

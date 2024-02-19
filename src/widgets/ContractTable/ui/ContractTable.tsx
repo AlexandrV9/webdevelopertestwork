@@ -1,14 +1,16 @@
-import { FC } from "react";
+import { FC, useEffect } from "react";
 
 import cls from "./ContractTable.module.scss";
 
 import { columns } from "./conts/columns";
 
-import { generateRateListForTest } from "entities/Rate";
 import { AppTable } from "shared/ui/AppTable";
+import { useSelector } from "react-redux";
+import { selectRateList } from "entities/Rate";
 
 export const ContractTable: FC = () => {
-  const list = generateRateListForTest(4);
+
+  const list = useSelector(selectRateList);
 
   return (
     <AppTable

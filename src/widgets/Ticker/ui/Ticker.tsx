@@ -1,73 +1,92 @@
-import { FC, memo, useCallback, useContext, useState } from "react";
 import classNames from "classnames";
+import { FC, memo, useCallback, useEffect, useState } from "react";
 
 import cls from "./Ticker.module.scss";
-import { SelectList } from "shared/ui/SelectList/SelectList";
-import { Input } from "shared/ui/Input/ui/Input";
-import { Button, ButtonTheme } from "shared/ui/Button/ui/Button";
-import { formatAmount } from "shared/lib/common/formatAmount";
-import { WSContext } from "app/providers/WSProvider/config/WSContext";
-import { CurrencyPair } from "shared/models/CurrencyPair";
+
+import Decimal from "decimal.js";
+import { useSelector } from "react-redux";
+import { useAppDispatch } from "shared/lib/hooks/redux";
+import { useAPI } from "shared/lib/hooks/useAPI";
 import { OrderSide } from "shared/types/Enums";
+import { Button, ButtonTheme } from "shared/ui/Button/ui/Button";
+import { Input } from "shared/ui/Input/ui/Input";
+import { SelectList, SelectListItem } from "shared/ui/SelectList/SelectList";
+import { tickerList } from "../model/consts/tickerList";
+import { selectTickerData, tickerActions } from "../model/slice/tickerSlice";
 
 interface TickerProps {
   className?: string;
 }
 
-const currencyPairs: CurrencyPair[] = [
-  { id: 1, name: "CNH / RUB" },
-  { id: 2, name: "EUR / RUB" },
-  { id: 3, name: "EUR / USD" },
-  { id: 4, name: "USD / RUB" },
-  { id: 5, name: "TRY / RUB" },
-  { id: 6, name: "BYN / RUB" },
-];
-
 export const Ticker: FC<TickerProps> = memo((props) => {
   const { className } = props;
 
-  const [selectCurrencyPair, setSelectCurrencyPair] = useState(
-    currencyPairs[0]
+  const dispatch = useAppDispatch();
+
+  const [inpVolume, setInpVolume] = useState(0);
+
+  const { priceBuy, priceSell, maxVolume, instrument } =
+    useSelector(selectTickerData);
+
+  const api = useAPI();
+
+  const handleChangeInstrument = useCallback(
+    (instrument: SelectListItem) => {
+      dispatch(tickerActions.setInstrument(instrument));
+    },
+    [dispatch]
   );
 
-  const buyPrice = 8.559;
+  const handleChangeVolume = useCallback((value: string) => {
+    const newValue = value.replace(/\D/, "");
+    if (Number(newValue) <= maxVolume) {
+      setInpVolume(Number(newValue));
+    }
 
-  const { placeOrder } = useContext(WSContext);
-
-  const [amount, setAmount] = useState(1000000);
-
-  const handleChangeAmount = useCallback((value: string) => {
-    const newValue = value.replace(/\D/, "") || "0";
-    setAmount(parseInt(newValue));
-  }, []);
+    // dispatch(tickerActions.setVolume(newValue));
+  }, [maxVolume]);
 
   const handleClickBtnBuy = useCallback(() => {
-    placeOrder?.(selectCurrencyPair, OrderSide.BUY, amount, buyPrice);
-  }, [amount, placeOrder, selectCurrencyPair]);
+    api.placeOrder?.(
+      instrument.id,
+      OrderSide.BUY,
+      new Decimal(maxVolume),
+      new Decimal(priceBuy)
+    );
+    // 
+  }, [api, instrument.id, maxVolume, priceBuy]);
 
   const handleClickBtnSell = useCallback(() => {
-    placeOrder?.(selectCurrencyPair, OrderSide.SELL, amount, buyPrice);
-  }, [amount, placeOrder, selectCurrencyPair]);
+    api.placeOrder?.(
+      instrument.id,
+      OrderSide.SELL,
+      new Decimal(maxVolume),
+      new Decimal(priceSell)
+    );
+  }, [api, instrument.id, maxVolume, priceSell]);
+
+  useEffect(() => {
+    api.subscribeMarketData?.(instrument.id);
+  },[api, instrument.id])
 
   return (
     <div className={classNames(cls.Ticker, {}, [className])}>
       <SelectList
-        // @ts-ignore
-        value={selectCurrencyPair}
-        // @ts-ignore
-        list={currencyPairs}
-        onChange={setSelectCurrencyPair}
+        value={instrument}
+        list={tickerList}
+        onChange={handleChangeInstrument}
         className={cls.listCurrencyPair}
       />
+      <Input value={maxVolume} placeholder="Max volume" disabled/>
       <Input
-        value={amount}
-        onChange={handleChangeAmount}
-        placeholder="Enter amount"
+        value={inpVolume}
+        onChange={handleChangeVolume}
+        placeholder="Enter volume"
         className={cls.inpAmount}
       />
       <div className={cls.infoBox}>
         <div className={cls.left}>
-          <p>8.558</p>
+          <p>{priceSell}</p>
           <Button
             theme={ButtonTheme.RED}
             fullWidth
@@ -77,7 +96,7 @@ export const Ticker: FC<TickerProps> = memo((props) => {
           </Button>
         </div>
         <div className={cls.right}>
-          <p>8.559</p>
+          <p>{priceBuy}</p>
           <Button
             theme={ButtonTheme.GREEN}
             fullWidth

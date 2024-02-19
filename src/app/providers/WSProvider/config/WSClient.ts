@@ -2,7 +2,12 @@ import Decimal from "decimal.js";
 import { WebSocket as FakeSocket } from "mock-socket";
 import { ClientMessage } from "shared/models/ClientMessages";
 import { ServerEnvelope } from "shared/models/ServerMessages";
-import { ClientMessageType, Instrument, OrderSide, ServerMessageType } from "shared/types/Enums";
+import {
+  ClientMessageType,
+  Instrument,
+  OrderSide,
+  ServerMessageType,
+} from "shared/types/Enums";
 
 window.WebSocket = FakeSocket;
 
@@ -29,20 +34,19 @@ export class WSClient {
       console.log("Client connected...");
     };
 
-    this.client.onmessage = (event) => {
-      console.log("Клиент принимает сообщение от сервера", event);
-      // const message: ServerEnvelope = JSON.parse(event.data);
-      // switch (message.messageType) {
-      //   case ServerMessageType.success:
-      //     break;
-      //   case ServerMessageType.error:
-      //     break;
-      //   case ServerMessageType.executionReport:
-      //     break;
-      //   case ServerMessageType.marketDataUpdate:
-      //     break;
-      // }
-    };
+    // this.client.onmessage = (event) => {
+    //   const message: ServerEnvelope = JSON.parse(event.data);
+    //   switch (message.messageType) {
+    //     case ServerMessageType.success:
+    //       break;
+    //     case ServerMessageType.error:
+    //       break;
+    //     case ServerMessageType.executionReport:
+    //       break;
+    //     case ServerMessageType.marketDataUpdate:
+    //       break;
+    //   }
+    // };
   };
 
   waitForConnection = (callback: () => void, interval: number) => {
@@ -84,6 +88,10 @@ export class WSClient {
         subscriptionId,
       },
     });
+  };
+
+  getAllRates = () => {
+    this.send({ messageType: ClientMessageType.getAllRates });
   };
 
   placeOrder = (

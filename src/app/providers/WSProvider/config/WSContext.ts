@@ -1,21 +1,17 @@
-import { Client } from "mock-socket";
+import Decimal from "decimal.js";
 import { createContext } from "react";
-import { CurrencyPair } from "shared/models/CurrencyPair";
-import { OrderSide } from "shared/types/Enums";
+import { Instrument, OrderSide } from "shared/types/Enums";
 
 export interface WSContextProps {
-  client?: Client;
-  connect?: () => void;
-  disconnect?: () => void;
-  send?: (message: string) => void;
-  subscribeMarketData?: () => void;
-  unsubscribeMarketData?: () => void;
+  subscribeMarketData?: (instrument: Instrument) => void;
+  unsubscribeMarketData?: (subscriptionId: string) => void;
   placeOrder?: (
-    pair: CurrencyPair,
+    pair: Instrument,
     side: OrderSide,
-    amount: number,
-    price: number
+    amount: Decimal,
+    price: Decimal
   ) => void;
+  getAllRates?: () => void;
 }
 
 export const WSContext = createContext<WSContextProps>({});

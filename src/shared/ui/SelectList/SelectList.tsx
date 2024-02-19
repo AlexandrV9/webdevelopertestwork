@@ -4,10 +4,9 @@ import { Listbox } from "@headlessui/react";
 
 import cls from "./SelectList.module.scss";
 
-interface SelectListItem {
+export interface SelectListItem {
   id: number;
   name: string;
-  value?: string;
   disabled?: boolean;
 }
 

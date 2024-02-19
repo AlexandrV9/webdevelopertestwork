@@ -1,23 +1,19 @@
 import { WSServer } from "./WSServer";
 import { WSClient } from "./WSClient";
 
-export class WSConnector {
+const wsServer = new WSServer();
+wsServer.start();
+
+class WSConnector {
   client: WSClient | undefined;
-  server: WSServer | undefined;
 
   constructor() {
-    this.server = new WSServer();
     this.client = new WSClient();
   }
 
   connect() {
-    this.server?.start();
     this.client?.connect();
   }
-
-  disconnect() {
-    this.server?.stop();
-    this.client = undefined;
-    this.server = undefined;
-  }
 }
+
+export const wsConnector = new WSConnector();

@@ -1,14 +1,14 @@
 import React from "react";
-import { Ticker } from "../widgets/Ticker";
 
 import "./styles/index.css";
 
 import { ContractTable } from "widgets/ContractTable";
+import { Ticker } from "widgets/Ticker";
 
 export function App() {
   return (
     <div className="App">
-      <ContractTable />
+      {/* <ContractTable /> */}
       <Ticker />
     </div>
   );

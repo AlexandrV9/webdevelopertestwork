@@ -1,31 +1,22 @@
-import { FC, Fragment, ReactNode, memo, useEffect, useState } from "react";
+import { FC, ReactNode } from "react";
 
-import { WSConnector } from "../config/WSConnector";
 import { WSContext } from "../config/WSContext";
+import { useWSConnect } from "../hooks/useWSConnect";
 
 interface WSProviderProps {
-  className?: string;
   children?: ReactNode;
 }
 
-const wsConnector = new WSConnector();
+export const WSProvider: FC<WSProviderProps> = ({ children }) => {
+  const { isConnect, API } = useWSConnect();
 
-export const WSProvider: FC<WSProviderProps> = memo((props) => {
-  const { className, children } = props;
+  if (!isConnect) {
+    return <h1>Происходит подключение к WebSocket-серверу...</h1>;
+  }
 
-  const [wsClient, setWsClient] = useState({});
+  if (!API) {
+    return <h1>Возникли ошибки...</h1>;
+  }
 
-  useEffect(() => {
-    wsConnector.connect();
-
-    if (wsConnector.client) {
-      setWsClient(wsConnector.client);
-    }
-
-    return () => {
-      wsConnector.disconnect();
-    };
-  }, []);
-
-  return <WSContext.Provider value={wsClient}>{children}</WSContext.Provider>;
-});
+  return <WSContext.Provider value={API}>{children}</WSContext.Provider>;
+};

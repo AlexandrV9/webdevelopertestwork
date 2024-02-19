@@ -1,14 +1,12 @@
+import { Instrument, OrderSide, OrderStatus } from "shared/types/Enums";
+
 export interface Rate {
   id: number;
   creation_time: number;
   change_time: number;
-  status: RateStatus;
-  side: Side;
+  status: OrderStatus;
+  side: OrderSide;
   price: string;
   amount: string;
-  instrument: string;
+  instrument: Instrument;
 }
-
-export type RateStatus = "ACTIVE" | "FILLED" | "REJECTED" | "CANCELLED";
-
-export type Side = "Buy" | "Sell";
